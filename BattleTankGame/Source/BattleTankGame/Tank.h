@@ -2,13 +2,14 @@
 
 #pragma once
 
+#include"GameFramework/Pawn.h"
 #include "CoreMinimal.h"
-#include "GameFramework/Pawn.h"
 #include "Tank.generated.h"
 
 class UTankBarrel;	//Forward declaration
 class UTankTurret;
 class UTankAimingComponent;
+class AProjectile;
 UCLASS()
 class BATTLETANKGAME_API ATank : public APawn
 {
@@ -21,7 +22,7 @@ public:
 		void SetBarrelReference(UTankBarrel* BarrelToSet);
 	UFUNCTION(BlueprintCallable, Category = Setup)
 		void SetTurretReference(UTankTurret* TurretToSet);
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = Firing)
 		void Fire();
 protected:
 	UTankAimingComponent * TankAimingComponent = nullptr;
@@ -34,7 +35,17 @@ private:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	UPROPERTY(EditAnywhere, Category = Firing)
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
 		float LaunchSoeed = 10000;
+
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
+		float ReloadTimeInSeconds = 3;
+
+	UPROPERTY(EditDefaultsOnly, Category = Setup)
+		TSubclassOf<AProjectile> ProjectileBlueprint;
 	
+	//Local barrel reference
+	UTankBarrel * Barrel = nullptr;
+
+	double LastFireTime = 0;
 };
