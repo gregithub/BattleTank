@@ -6,7 +6,6 @@
 
 void ATankPlayerController::BeginPlay() {
 	Super::BeginPlay();
-	GetControlledTank();
 }
 
 void ATankPlayerController::Tick(float DeltaTime) {
