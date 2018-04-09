@@ -19,7 +19,7 @@ class BATTLETANKGAME_API ATank : public APawn
 public:
 	void AimAt(FVector HitLocation);
 
-	
+	virtual void BeginPlay() override;
 	UFUNCTION(BlueprintCallable, Category = "Firing")
 		void Fire();
 protected:

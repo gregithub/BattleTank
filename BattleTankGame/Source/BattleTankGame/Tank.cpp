@@ -16,11 +16,14 @@ ATank::ATank()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
-
+	UE_LOG(LogTemp, Warning, TEXT("YETI: Constructor C++ called."));
 	//No need to protect pointers as added at contstuciton
 
 }
-
+void ATank::BeginPlay() {
+	Super::BeginPlay();
+	UE_LOG(LogTemp, Warning, TEXT("YETI: BeginPlay C++ called."));
+}
 
 
 void ATank::Fire() {
@@ -43,6 +46,6 @@ void ATank::Fire() {
 // Called to bind functionality to input
 
 void ATank::AimAt(FVector HitLocation) {
+	if (!TankAimingComponent) { return; }
 	TankAimingComponent->AimAt(HitLocation,LaunchSoeed);
 }
-
