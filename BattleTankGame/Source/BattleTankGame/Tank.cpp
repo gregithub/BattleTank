@@ -19,23 +19,10 @@ ATank::ATank()
 
 	//No need to protect pointers as added at contstuciton
 
-	TankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>(FName("Aiming Component"));
 }
 
-// Called when the game starts or when spawned
-void ATank::BeginPlay()
-{
-	Super::BeginPlay();
-	
-}
 
-void ATank::SetBarrelReference(UTankBarrel* BarrelToSet) {
-	TankAimingComponent->SetBarrellRefference(BarrelToSet);
-	Barrel = BarrelToSet;
-}
-void ATank::SetTurretReference(UTankTurret* TurretToSet) {
-	TankAimingComponent->SetTurretRefference(TurretToSet);
-}
+
 void ATank::Fire() {
 	bool isReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds;
 
@@ -54,11 +41,6 @@ void ATank::Fire() {
 }
 
 // Called to bind functionality to input
-void ATank::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-}
 
 void ATank::AimAt(FVector HitLocation) {
 	TankAimingComponent->AimAt(HitLocation,LaunchSoeed);
