@@ -9,7 +9,6 @@
 class UTankBarrel;	//Forward declaration
 class UTankTurret;
 class UTankAimingComponent;
-class UTankMovementComponent;
 class AProjectile;
 UCLASS()
 class BATTLETANKGAME_API ATank : public APawn
@@ -25,13 +24,12 @@ public:
 protected:
 	UPROPERTY(BlueprintReadOnly)
 		UTankAimingComponent * TankAimingComponent = nullptr;
-	UPROPERTY(BlueprintReadOnly)
-		UTankMovementComponent * TankMovementComponent = nullptr;
 
 private:	
 
 	ATank();
 
+	//TODO remove when firing is moved to aiming component
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 		float LaunchSoeed = 10000;
 
