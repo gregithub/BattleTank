@@ -21,7 +21,7 @@ class BATTLETANKGAME_API UTankAimingComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:	
-	void AimAt(FVector HitLocation,float LaunchSoeed);
+	void AimAt(FVector HitLocation);
 
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 		void Initialise(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet);
@@ -33,9 +33,18 @@ private:
 	UTankTurret * Turret = nullptr;
 
 	void MoveBarrelAndTurretTowards(FVector AimDirection);
+
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+		float LaunchSoeed = 10000;
 protected:
 
 	UPROPERTY(BlueprintReadOnly, Category = "State")
 		EFiringState FiringState = EFiringState::Reloading;
 
 };
+/*taken from tank.cpp 
+void ATank::AimAt(FVector HitLocation) {
+if (!ensure(TankAimingComponent)) { return; }
+TankAimingComponent->AimAt(HitLocation,LaunchSoeed);
+}
+*/
