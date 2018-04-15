@@ -14,6 +14,7 @@ enum class EFiringState : uint8 {
 
 class UTankBarrel; //Forward declaration
 class UTankTurret;
+class AProjectile;
 //Holds parameters properties and Elevate method
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BATTLETANKGAME_API UTankAimingComponent : public UActorComponent
@@ -25,26 +26,35 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 		void Initialise(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet);
+	UFUNCTION(BlueprintCallable, Category = "Firing")
+		void Fire();
 
 private:
 	UTankAimingComponent();
 
-	UTankBarrel * Barrel = nullptr;
-	UTankTurret * Turret = nullptr;
+	virtual void BeginPlay() override;
+
+	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
 
 	void MoveBarrelAndTurretTowards(FVector AimDirection);
 
+	UTankBarrel * Barrel = nullptr;
+	UTankTurret * Turret = nullptr;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 		float LaunchSoeed = 10000;
+
+	double LastFireTime = 0;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+		float ReloadTimeInSeconds = 3;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+		TSubclassOf<AProjectile> ProjectileBlueprint;
+
 protected:
 
 	UPROPERTY(BlueprintReadOnly, Category = "State")
 		EFiringState FiringState = EFiringState::Reloading;
 
 };
-/*taken from tank.cpp 
-void ATank::AimAt(FVector HitLocation) {
-if (!ensure(TankAimingComponent)) { return; }
-TankAimingComponent->AimAt(HitLocation,LaunchSoeed);
-}
-*/

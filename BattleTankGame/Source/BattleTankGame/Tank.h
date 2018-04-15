@@ -14,27 +14,8 @@ class BATTLETANKGAME_API ATank : public APawn
 {
 	GENERATED_BODY()
 
-public:
-
-	virtual void BeginPlay() override;
-	UFUNCTION(BlueprintCallable, Category = "Firing")
-		void Fire();
-
-private:	
-
 	ATank();
 
-	//TODO remove when firing is moved to aiming componen
-	UPROPERTY(EditDefaultsOnly, Category = "Firing")
-		float LaunchSoeed = 10000;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Firing")
-		float ReloadTimeInSeconds = 3;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Setup")
-		TSubclassOf<AProjectile> ProjectileBlueprint;
 	
-	double LastFireTime = 0;
 
-	UTankBarrel* Barrel = nullptr;
 };

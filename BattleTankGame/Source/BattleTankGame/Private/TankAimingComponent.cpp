@@ -3,6 +3,7 @@
 #include "TankAimingComponent.h"
 #include"TankBarrel.h"
 #include "TankTurret.h"
+#include"Projectile.h"
 #include"Kismet/GameplayStatics.h"
 #include"Engine/StaticMesh.h"
 
@@ -17,6 +18,18 @@ UTankAimingComponent::UTankAimingComponent()
 
 	// ...
 }
+void UTankAimingComponent::BeginPlay() {
+
+	//so that first fire is after initial reload
+	LastFireTime = FPlatformTime::Seconds();
+}
+
+void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) {
+	if ((FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds) {
+		FiringState = EFiringState::Reloading;
+	}
+}
+
 void UTankAimingComponent::Initialise(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet) {
 	Barrel = BarrelToSet;
 	Turret = TurretToSet;
@@ -56,3 +69,20 @@ void UTankAimingComponent::MoveBarrelAndTurretTowards(FVector AimDirection) {
 	Barrel->Elevate(DeltaRotator.Pitch);
 	Turret->Rotate(DeltaRotator.Yaw);
 }
+void UTankAimingComponent::Fire() {
+	if (FiringState !=EFiringState::Reloading) {
+		//Spawn Aa projectile at the socket location on the barrel
+		if (!ensure(Barrel)) { return; }
+		if (!ensure(ProjectileBlueprint)) { return; }
+
+		auto Projectile = GetWorld()->SpawnActor<AProjectile>(
+			ProjectileBlueprint,
+			Barrel->GetSocketLocation(FName("Projectile")),
+			Barrel->GetSocketRotation(FName("Projectile"))
+			);
+
+		Projectile->LaunchProjectile(LaunchSoeed);
+	}
+}
+
+
