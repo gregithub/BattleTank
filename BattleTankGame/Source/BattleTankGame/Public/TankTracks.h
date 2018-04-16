@@ -18,11 +18,18 @@ public:
 	UFUNCTION(BlueprintCallable,Category = "Input")
 		void SetThrottle(float Throttle);
 		
+	
 	//Max force per tack in Newtons
 	UPROPERTY(EditDefaultsOnly)
 		float TrackMaxDrivingForce = 400000;//\Asume 40 tone tank, and 1g acceleration
 private:
 	UTankTracks();
+	virtual void BeginPlay() override;
+
+	UFUNCTION()
+		void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent,
+			FVector NormalImpulse, const FHitResult& Hit);
+
 	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
 
 };
