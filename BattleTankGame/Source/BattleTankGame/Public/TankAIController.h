@@ -18,9 +18,12 @@ private:
 	virtual void Tick(float DeltaTime) override;
 
 	UTankAimingComponent *AimingComponent = nullptr;
-
-	float AcceptanceRadius = 3000;
+	
+	
 protected:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
 		void FoundAimingComponent(UTankAimingComponent *AimCompRef);
+
+	UPROPERTY(EditAnywhere, Category = "Setup")
+		float AcceptanceRadius = 8000;
 };
