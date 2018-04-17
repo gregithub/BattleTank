@@ -9,7 +9,8 @@ UENUM()
 enum class EFiringState : uint8 {
 	Reloading,
 	Aiming,
-	Locked
+	Locked,
+	OutOfAmmo
 };
 
 class UTankBarrel; //Forward declaration
@@ -30,6 +31,9 @@ public:
 		void Fire();
 
 	EFiringState GetFiringState() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Firing")
+		int GetRoundsLeft() const;
 private:
 	UTankAimingComponent();
 
@@ -54,6 +58,8 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 		TSubclassOf<AProjectile> ProjectileBlueprint;
+
+	int Ammuniton=3;
 
 	bool IsBarrelMoving();
 protected:
