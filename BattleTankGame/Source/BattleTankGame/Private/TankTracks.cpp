@@ -1,11 +1,13 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TankTracks.h"
+
 //#include"Runtime/Engine/Classes/GameFramework/Actor.h"
 UTankTracks::UTankTracks() {
 	PrimaryComponentTick.bCanEverTick = false;
 }
 void UTankTracks::BeginPlay() {
+	Super::BeginPlay();
 	OnComponentHit.AddDynamic(this, &UTankTracks::OnHit);
 
 }
