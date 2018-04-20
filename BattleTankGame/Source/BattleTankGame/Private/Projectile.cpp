@@ -4,6 +4,8 @@
 #include "Components/StaticMeshComponent.h"
 #include"Runtime/Engine/Classes/Particles/ParticleSystemComponent.h"
 #include"Runtime/Engine/Classes/Components/StaticMeshComponent.h"
+#include "Engine/World.h"
+#include"Runtime/Engine/Public/TimerManager.h"
 
 // Sets default values
 AProjectile::AProjectile()
@@ -26,6 +28,8 @@ AProjectile::AProjectile()
 	ImpactBlast->AttachToComponent(RootComponent,FAttachmentTransformRules::KeepRelativeTransform);
 	ImpactBlast->bAutoActivate = false;
 
+	ExplosionForce = CreateDefaultSubobject<URadialForceComponent>(FName("Explosion Force"));
+	ExplosionForce->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 
 }
 
@@ -33,6 +37,7 @@ AProjectile::AProjectile()
 void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
+	CollisionMesh->OnComponentHit.AddDynamic(this, &AProjectile::OnHit);
 
 }
 
@@ -41,3 +46,20 @@ void AProjectile::LaunchProjectile(float Speed) {
 	ProjectileMovement->Activate();
 }
 
+void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent,
+	FVector NormalImpulse, const FHitResult& Hit) {
+	LaunchBlast->Deactivate();
+	ImpactBlast->Activate();
+	ExplosionForce->FireImpulse();
+	
+	SetRootComponent(ImpactBlast);
+	CollisionMesh->DestroyComponent();
+
+	FTimerHandle TimerHandle;
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle,this
+		,&AProjectile::OnTimerExpire,DestroyDelay,false);
+}
+
+void  AProjectile::OnTimerExpire() {
+	Destroy();
+}
