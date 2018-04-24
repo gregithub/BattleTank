@@ -19,6 +19,8 @@ private:
 	
 	virtual void Tick(float Time) override;
 
+	virtual void SetPawn(APawn* InPawn) override;
+
 	void AimTowardsCrosshair();
 
 	bool GetSightRayHitocation(FVector &) const;
@@ -33,6 +35,9 @@ private:
 
 	UPROPERTY(EditDefaultsOnly)
 		float LineTraceRange = 1000000;
+
+	UFUNCTION()
+		void OnDeath();
 
 	UTankAimingComponent *AimingComponent = nullptr;
 public:

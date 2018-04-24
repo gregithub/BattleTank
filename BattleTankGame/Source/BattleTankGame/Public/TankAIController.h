@@ -19,11 +19,11 @@ private:
 
 	UTankAimingComponent *AimingComponent = nullptr;
 	
+	virtual void SetPawn(APawn* InPawn) override;
 	
+	UFUNCTION()
+		void OnPossesedTankDeath();
 protected:
-	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
-		void FoundAimingComponent(UTankAimingComponent *AimCompRef);
-
 	UPROPERTY(EditAnywhere, Category = "Setup")
 		float AcceptanceRadius = 8000;
 };
