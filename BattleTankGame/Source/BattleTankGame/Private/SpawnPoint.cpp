@@ -4,7 +4,6 @@
 #include "Engine/World.h"
 #include"Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 
-
 // Sets default values for this component's properties
 USpawnPoint::USpawnPoint()
 {
@@ -25,6 +24,7 @@ void USpawnPoint::BeginPlay()
 	if (!NewActor) return;
 	NewActor->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform);
 	UGameplayStatics::FinishSpawningActor(NewActor,GetComponentTransform());
+	
 	// ...
 	
 }
